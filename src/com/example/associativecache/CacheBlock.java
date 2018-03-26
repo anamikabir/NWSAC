@@ -6,9 +6,10 @@ import java.lang.Long;
 /**
  * Created by anamika on 3/24/18.
  *
- * This class signifies a cache block with at most N entries
+ * This class represents a cache block with at most N entries
  * Implemented using priority queue (based on access time)
- * Also implements methods to delete first or last elements, which can be used by cache replacement algo
+ * Also implements methods to delete first or last elements of priority queue,
+ * which can be utilized by cache replacement algorithms
  *
  */
 public class CacheBlock<Key,Value> {
@@ -60,7 +61,7 @@ public class CacheBlock<Key,Value> {
          return this.cacheEntries.poll();
      }
 
-    //Method to delete last entry of the priority queue (with greatest value of access time)
+    // Method to delete last entry of the priority queue (with greatest value of access time)
 
      public IndividualEntry delLast()
      {
@@ -78,7 +79,7 @@ public class CacheBlock<Key,Value> {
          return temp;
      }
 
-    //Method to delete entry with a specific tag
+    // Method to delete entry with a specific tag
 
     public void delSpecific(int tag)
      {
@@ -90,7 +91,7 @@ public class CacheBlock<Key,Value> {
 
      }
 
-    //Method to find a specific individual entry with a given tag
+    // Method to find a specific individual entry with a given tag
 
     public IndividualEntry findSpecific(int tag)
     {
@@ -102,8 +103,16 @@ public class CacheBlock<Key,Value> {
         return null;
     }
 
+    // Method to view all the entries in cache block
 
-    //Method to add an entry to the cache block
+    public void viewEntries()
+    {
+        for(IndividualEntry<Key,Value> entry: cacheEntries)
+            System.out.println(entry);
+    }
+
+
+    // Method to add an entry to the cache block
 
      public void addEntry(IndividualEntry<Key,Value> entry)
      {

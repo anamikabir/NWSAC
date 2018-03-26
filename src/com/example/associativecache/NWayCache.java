@@ -68,11 +68,13 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
     {
         int tag = hashFunc(k);
         int i = getBlockIndex(tag);
-        //---------------------------------
-        //TO-DO
-        // Check if the entry already exists
-        // Use findSpecific function
-        //----------------------------------
+        IndividualEntry<Key,Value> entry = this.cacheArr[i].findSpecific(tag);
+        if (entry != null)
+        {
+            // entry.setAccessTime(); // If access time needs to be modified
+            return;  //if an entry already exists
+
+        }
         IndividualEntry<Key,Value> temp = new IndividualEntry<>(tag,v);
         if (this.cacheArr[i].getCurrSize()==this.cacheArr[i].getCapacity())
         {
@@ -86,15 +88,18 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
     @Override
     public Value get(Key k) throws CacheLoadException
     {
-        //----------------------------
-        // TO-DO
-        // If entry already exists, update the access time
-        //-----------------------------
         int tag = hashFunc(k);
         int i = getBlockIndex(tag);
         IndividualEntry<Key,Value> entry = this.cacheArr[i].findSpecific(tag);
         if (entry == null)
+        {
             throw new CacheLoadException("Cache miss");
+            /*
+             * Exception should be caught by the calling program , which should then make a function call
+             * to fetch data from memory and also load it in the cache (Memory call-- Outside the scope)
+             */
+        }
+        entry.setAccessTime();
         return entry.getValue();
 
     }

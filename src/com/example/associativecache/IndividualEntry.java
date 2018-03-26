@@ -118,9 +118,9 @@ public class IndividualEntry<Key,Value>{
     /*
      * Set current access time of the entry (in milliseconds)
      */
-    public void setAccessTime(long timestamp)
+    public void setAccessTime()
     {
-        this.accessTime = timestamp;
+        this.accessTime = this.calcAccessTime();
     }
 
 
