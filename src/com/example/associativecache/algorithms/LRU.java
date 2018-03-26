@@ -13,7 +13,7 @@ public class LRU<Key, Value> extends ReplacementAlgo<Key, Value> {
      * Implementing cache eviction method to remove the oldest entry from the cache block
      */
     @Override
-    public void evictionCacheEntry(CacheBlock block)
+    public void evictionCacheEntry(CacheBlock<Key,Value> block)
     {
         if(block.getCurrSize()==0)
             return;

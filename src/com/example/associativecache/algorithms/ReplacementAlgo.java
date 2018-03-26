@@ -14,5 +14,5 @@ public abstract class ReplacementAlgo<Key,Value> {
      *  @param cache block
      *  @return void
      */
-    public abstract void evictionCacheEntry(CacheBlock block);
+    public abstract void evictionCacheEntry(CacheBlock<Key,Value> block);
 }

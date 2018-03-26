@@ -2,14 +2,18 @@ package com.example.associativecache;
 
 import java.util.*;
 import java.lang.Long;
-import com.example.associativecache.algorithms.*;
 
 /**
  * Created by anamika on 3/24/18.
+ *
+ * This class signifies a cache block with at most N entries
+ * Implemented using priority queue (based on access time)
+ * Also implements methods to delete first or last elements, which can be used by cache replacement algo
+ *
  */
 public class CacheBlock<Key,Value> {
 
-    private PriorityQueue<IndividualEntry> cacheEntries;
+    private PriorityQueue<IndividualEntry<Key,Value>> cacheEntries;
     private int capacity;
 
     /* Constructors --------------------------------------------------------> */
@@ -17,22 +21,35 @@ public class CacheBlock<Key,Value> {
     CacheBlock()
     {
         Comparator<IndividualEntry> comparator = new MyComparator();
-        this.cacheEntries = new PriorityQueue<IndividualEntry>(comparator);
+        this.cacheEntries = new PriorityQueue<>(comparator);
         this.capacity = 0;
     }
     CacheBlock(int n)
     {
         Comparator<IndividualEntry> comparator = new MyComparator();
-        this.cacheEntries = new PriorityQueue<IndividualEntry>(comparator);
+        this.cacheEntries = new PriorityQueue<>(comparator);
         this.capacity = n;
     }
 
-    /* Methods --------------------------------------------------------> */
+    /* getters and setters --------------------------------------------------------> */
+
      public int getCurrSize()
      {
          return cacheEntries.size();
      }
 
+    public int getCapacity()
+    {
+        return this.capacity;
+    }
+
+
+    public void setCapacity(int capacity)
+    {
+         this.capacity = capacity;
+    }
+
+    /* Methods --------------------------------------------------------> */
 
      // Method to delete first entry of the priority queue (with least value of access time)
 
@@ -50,7 +67,7 @@ public class CacheBlock<Key,Value> {
          if (getCurrSize()==0)
              return null;
 
-         PriorityQueue<IndividualEntry> pqnew = new PriorityQueue<IndividualEntry>();
+         PriorityQueue<IndividualEntry<Key,Value>> pqnew = new PriorityQueue<>();
          while(cacheEntries.size() > 1)
          {
              pqnew.add(cacheEntries.poll());
@@ -61,18 +78,44 @@ public class CacheBlock<Key,Value> {
          return temp;
      }
 
-     public void delSpecific(Key k)
+    //Method to delete entry with a specific tag
+
+    public void delSpecific(int tag)
      {
+         for(IndividualEntry entry: cacheEntries)
+             if (entry.getTag()==tag)
+             {
+                 cacheEntries.remove(entry);
+             }
 
      }
 
-     public void addEntry(IndividualEntry entry)
+    //Method to find a specific individual entry with a given tag
+
+    public IndividualEntry findSpecific(int tag)
+    {
+        for(IndividualEntry<Key,Value> entry: cacheEntries)
+            if (entry.getTag()==tag)
+            {
+                return entry;
+            }
+        return null;
+    }
+
+
+    //Method to add an entry to the cache block
+
+     public void addEntry(IndividualEntry<Key,Value> entry)
      {
          this.cacheEntries.add(entry);
      }
 
 
 }
+
+/*
+ *  Comparator class to compare two individual Entry based on their access time
+ */
 
 class MyComparator implements Comparator<IndividualEntry> {
 

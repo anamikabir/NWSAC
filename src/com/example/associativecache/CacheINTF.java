@@ -18,7 +18,8 @@ public interface CacheINTF<Key,Value>
      * @param Key , Value
      * @return void
      */
-     void put(Key k, Value v);
+
+    public void put(Key k, Value v);
 
     /*
      * Method for retrieving value associated with the key
@@ -27,15 +28,15 @@ public interface CacheINTF<Key,Value>
      * @return Value
      */
 
-     Value get(Key k) throws CacheLoadException;
+    public Value get(Key k) throws CacheLoadException;
 
     /*
      * Method for deleting key,value from cache, returns value for the deleted entry
      * @param Key
-     * @return Value
+     * @return void
      */
 
-     Value delKey(Key k);
+    public void delKey(Key k);
 
      /*
       * Method for deleting the entire cache(along with stored entries)
@@ -43,6 +44,6 @@ public interface CacheINTF<Key,Value>
       * @return void
       */
 
-     void clearCache();
+    public void clearCache();
 
 }

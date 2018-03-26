@@ -9,19 +9,13 @@ package com.example.associativecache;
  * Access time is initialized with creation time and it gets updated when the entry is accessed
  * If value is a class object, override toString() method to view contents
  */
-public class IndividualEntry<Key, Value>{
+public class IndividualEntry<Key,Value>{
     private long accessTime;
+    private long creationTime;
     private int tag;
     private Value myVal;
     private boolean isValid;
 
-    /*
-     * Calculates Tag based on Key object - uses object.hashCode
-     */
-    private int calcTag(Key k)
-    {
-        return Math.abs(k.hashCode());
-    }
 
     /*
      *  Calculates the access time based on current system time
@@ -36,15 +30,17 @@ public class IndividualEntry<Key, Value>{
 
     IndividualEntry()
     {
-        this.accessTime=calcAccessTime();
+        this.creationTime = calcAccessTime();
+        this.accessTime=this.creationTime;
         this.tag = -1;
         this.myVal = null;
         this.isValid = false;
     }
-    IndividualEntry(Key k, Value v)
+    IndividualEntry(int tag, Value v)
     {
-        this.accessTime=calcAccessTime();
-        this.tag = calcTag(k);
+        this.creationTime = calcAccessTime();
+        this.accessTime=this.creationTime;
+        this.tag = tag;
         this.myVal = v;
         this.isValid = true;
     }
@@ -64,6 +60,7 @@ public class IndividualEntry<Key, Value>{
     /*
      * Get stored value
      */
+
     public Value getValue()
     {
         return this.myVal;
@@ -83,6 +80,14 @@ public class IndividualEntry<Key, Value>{
     public long getAccessTime()
     {
         return this.accessTime;
+    }
+
+    /*
+     * Get creation time of the entry (in milliseconds)
+     */
+    public long getCreationTime()
+    {
+        return this.creationTime;
     }
 
     /*
@@ -113,20 +118,17 @@ public class IndividualEntry<Key, Value>{
     /*
      * Set current access time of the entry (in milliseconds)
      */
-    public void getAccessTime(long timestamp)
+    public void setAccessTime(long timestamp)
     {
         this.accessTime = timestamp;
     }
 
-    public Value getMyVal() {
-        return myVal;
-    }
 
     // Need to override toString method of Value if it's not a primitive data type
 
     public String toString()
     {
-        String msg = "Tag: "+this.tag+" , Value: "+this.myVal;
+        String msg = "Tag: "+this.tag+" , Value: "+this.myVal+" ,Creation time(in millisec): "+this.creationTime;
         return msg;
     }
 }
