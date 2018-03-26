@@ -1,25 +1,26 @@
 package com.example.associativecache.algorithms;
 
 import com.example.associativecache.*;
-import java.util.List;
+
+
 
 /**
  * Created by anamika on 3/22/18.
  */
-public class LRU<Key, Value> implements ReplacementAlgo<Key, Value> {
+public class LRU<Key, Value> extends ReplacementAlgo<Key, Value> {
 
     /*
      * Implementing cache eviction method to remove the oldest entry from the cache block
      */
     @Override
-    public void evictionCacheEntry(List<IndividualEntry<Key, Value>> block)
+    public void evictionCacheEntry(CacheBlock block)
     {
-        if(block.isEmpty())
+        if(block.getCurrSize()==0)
             return;
-        for(IndividualEntry<Key, Value> entry:block)
-        {
-            ;
-        }
+        IndividualEntry deletedItem = block.delFirst();
+
+        System.out.println("Deleted Entry: "+deletedItem);
+
     }
 
 }
