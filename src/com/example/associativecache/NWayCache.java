@@ -61,6 +61,11 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
         return indx;
     }
 
+    // To check if two values are same
+    public boolean isEqual(Value v1, Value v2)
+    {
+        return (v1==v2);
+    }
 
 
     @Override
@@ -71,8 +76,22 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
         IndividualEntry<Key,Value> entry = this.cacheArr[i].findSpecific(tag);
         if (entry != null)
         {
-            // entry.setAccessTime(); // If access time needs to be modified
-            return;  //if an entry already exists
+            Value currVal = entry.getValue();
+
+            if(!this.isEqual(currVal,v)) //If the existing value in cache and new value are not same
+            {
+                //delete the outdated entry, so the new entry will be added
+                this.cacheArr[i].delSpecific(tag);
+            }
+
+            else    //if an entry already exists and the value remains unchanged
+            {
+                // If access time needs to be modified --> uncomment the following lines
+
+                //entry.setAccessTime(System.currentTimeMillis());
+                //this.cacheArr[i].reorderCache();
+                return;
+            }
 
         }
         IndividualEntry<Key,Value> temp = new IndividualEntry<>(tag,v);
@@ -99,7 +118,7 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
              * to fetch data from memory and also load it in the cache (Memory call-- Outside the scope)
              */
         }
-        System.out.println("After modifying access time");
+        //System.out.println("After modifying access time");
         entry.setAccessTime(System.currentTimeMillis());
         this.cacheArr[i].reorderCache();
         return entry.getValue();
@@ -119,7 +138,7 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
     public void clearCache()
     {
         for (int i=0;i<this.numBlocks;i++)
-            cacheArr[i]= new CacheBlock<Key,Value>(this.numEntriesPerBlock);
+            cacheArr[i]= new CacheBlock<>(this.numEntriesPerBlock);
     }
 
 }
