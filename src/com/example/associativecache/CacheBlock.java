@@ -19,13 +19,13 @@ public class CacheBlock<Key,Value> {
 
     /* Constructors --------------------------------------------------------> */
 
-    CacheBlock()
+    public CacheBlock()
     {
         Comparator<IndividualEntry> comparator = new MyComparator();
         this.cacheEntries = new PriorityQueue<>(comparator);
         this.capacity = 0;
     }
-    CacheBlock(int n)
+    public CacheBlock(int n)
     {
         Comparator<IndividualEntry> comparator = new MyComparator();
         this.cacheEntries = new PriorityQueue<>(comparator);
@@ -67,8 +67,8 @@ public class CacheBlock<Key,Value> {
      {
          if (getCurrSize()==0)
              return null;
-
-         PriorityQueue<IndividualEntry<Key,Value>> pqnew = new PriorityQueue<>();
+         Comparator<IndividualEntry> comparator = new MyComparator();
+         PriorityQueue<IndividualEntry<Key,Value>> pqnew = new PriorityQueue<>(comparator);
          while(cacheEntries.size() > 1)
          {
              pqnew.add(cacheEntries.poll());
@@ -79,6 +79,28 @@ public class CacheBlock<Key,Value> {
          return temp;
      }
 
+     public void reorderCache()
+     {
+         if (getCurrSize()==0)
+             return;
+
+         try {
+             Comparator<IndividualEntry> comparator = new MyComparator();
+             PriorityQueue<IndividualEntry<Key, Value>> pqnew = new PriorityQueue<>(comparator);
+             while (cacheEntries.size() > 0) {
+                 IndividualEntry<Key, Value> temp = cacheEntries.poll();
+                 //System.out.println(temp);
+                 pqnew.add(temp);
+             }
+             this.cacheEntries = pqnew;
+         }
+         catch (Exception e)
+         {
+             e.printStackTrace();
+         }
+
+     }
+
     // Method to delete entry with a specific tag
 
     public void delSpecific(int tag)
@@ -87,6 +109,7 @@ public class CacheBlock<Key,Value> {
              if (entry.getTag()==tag)
              {
                  cacheEntries.remove(entry);
+                 System.out.println("Entry removed from cache:\n"+entry);
              }
 
      }
@@ -116,7 +139,9 @@ public class CacheBlock<Key,Value> {
 
      public void addEntry(IndividualEntry<Key,Value> entry)
      {
+
          this.cacheEntries.add(entry);
+         System.out.println("Entry added to cache:\n"+entry);
      }
 
 

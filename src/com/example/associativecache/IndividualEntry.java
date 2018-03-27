@@ -28,7 +28,7 @@ public class IndividualEntry<Key,Value>{
 
     /* Constructors --------------------------------------------------------> */
 
-    IndividualEntry()
+    public IndividualEntry()
     {
         this.creationTime = calcAccessTime();
         this.accessTime=this.creationTime;
@@ -36,7 +36,7 @@ public class IndividualEntry<Key,Value>{
         this.myVal = null;
         this.isValid = false;
     }
-    IndividualEntry(int tag, Value v)
+    public IndividualEntry(int tag, Value v)
     {
         this.creationTime = calcAccessTime();
         this.accessTime=this.creationTime;
@@ -118,9 +118,9 @@ public class IndividualEntry<Key,Value>{
     /*
      * Set current access time of the entry (in milliseconds)
      */
-    public void setAccessTime()
+    public void setAccessTime(long timestamp)
     {
-        this.accessTime = this.calcAccessTime();
+        this.accessTime = timestamp;
     }
 
 
@@ -128,7 +128,7 @@ public class IndividualEntry<Key,Value>{
 
     public String toString()
     {
-        String msg = "Tag: "+this.tag+" , Value: "+this.myVal+" ,Creation time(in millisec): "+this.creationTime;
+        String msg = "Tag: "+this.tag+" , Value: "+this.myVal+" ,Access time(in millisec): "+this.accessTime;
         return msg;
     }
 }

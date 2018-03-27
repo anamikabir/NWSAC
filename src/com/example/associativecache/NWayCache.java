@@ -22,7 +22,7 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
 
     // By default when an eviction policy isn't mentioned, LRU is used
 
-    NWayCache(int numB, int numEPB)
+    public NWayCache(int numB, int numEPB)
     {
         this.numBlocks = numB;
         this.numEntriesPerBlock = numEPB;
@@ -31,7 +31,7 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
         this.clearCache();
     }
 
-    NWayCache(int numB, int numEPB, ReplacementAlgo policy)
+    public NWayCache(int numB, int numEPB, ReplacementAlgo policy)
     {
         this.numBlocks = numB;
         this.numEntriesPerBlock = numEPB;
@@ -99,7 +99,9 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
              * to fetch data from memory and also load it in the cache (Memory call-- Outside the scope)
              */
         }
-        entry.setAccessTime();
+        System.out.println("After modifying access time");
+        entry.setAccessTime(System.currentTimeMillis());
+        this.cacheArr[i].reorderCache();
         return entry.getValue();
 
     }

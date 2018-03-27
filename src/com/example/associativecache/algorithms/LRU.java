@@ -11,6 +11,7 @@ public class LRU<Key, Value> extends ReplacementAlgo<Key, Value> {
 
     /*
      * Implementing cache eviction method to remove the oldest entry from the cache block
+     * Most recent entry is at the end
      */
     @Override
     public void evictionCacheEntry(CacheBlock<Key,Value> block)
@@ -19,7 +20,7 @@ public class LRU<Key, Value> extends ReplacementAlgo<Key, Value> {
             return;
         IndividualEntry deletedItem = block.delFirst();
 
-        System.out.println("Deleted Entry: "+deletedItem);
+        System.out.println("LRU Deleted Entry: "+deletedItem);
 
     }
 

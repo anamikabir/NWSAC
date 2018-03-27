@@ -16,7 +16,7 @@ public class MRU<Key, Value> extends ReplacementAlgo<Key, Value> {
             return;
         IndividualEntry deletedItem = block.delLast();
 
-        System.out.println("Deleted Entry: "+deletedItem);
+        System.out.println("MRU Deleted Entry: "+deletedItem);
 
     }
 
