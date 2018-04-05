@@ -114,6 +114,11 @@ public class CacheBlock<Key,Value> {
 
      }
 
+     public void delEntry(IndividualEntry entry){
+         //if (cacheEntries.contains(entry))
+         cacheEntries.remove(entry);
+     }
+
     // Method to find a specific individual entry with a given tag
 
     public IndividualEntry findSpecific(int tag)

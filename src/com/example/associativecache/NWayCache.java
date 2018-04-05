@@ -80,8 +80,12 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
 
             if(!this.isEqual(currVal,v)) //If the existing value in cache and new value are not same
             {
-                //delete the outdated entry, so the new entry will be added
-                this.cacheArr[i].delSpecific(tag);
+                //update the outdated entry
+                entry.setValue(v);
+                entry.setAccessTime(System.currentTimeMillis());
+                this.cacheArr[i].reorderCache();
+                return;
+
             }
 
             else    //if an entry already exists and the value remains unchanged

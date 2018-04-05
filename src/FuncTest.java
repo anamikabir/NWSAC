@@ -6,14 +6,17 @@ import com.example.associativecache.*;
 import com.example.associativecache.algorithms.*;
 
 public class FuncTest {
-    public void TestPutGet()
+    public void TestPutGet() throws InterruptedException
     {
         int numberBlocks = 5;
         int numberEntriesPerBlock = 2;
         NWayCache nC = new NWayCache(numberBlocks,numberEntriesPerBlock);
         nC.put("key1","value1");
+        Thread.sleep(1000);
         nC.put("key2","value2");
+        Thread.sleep(1000);
         try {
+            System.out.println(nC.get("key2"));
             System.out.println(nC.get("key3"));
         }
         catch (CacheLoadException ex)
@@ -22,7 +25,7 @@ public class FuncTest {
             //Make call to memory and fetch the data and put it in cache
         }
     }
-    public void TestEvistionLRU() throws InterruptedException
+    public void TestEvictionLRU() throws InterruptedException
     {
         int numberBlocks = 2;
         int numberEntriesPerBlock = 2;
@@ -47,7 +50,7 @@ public class FuncTest {
         nC.put(5,"value5"); //Should cause data entry 3 to be deleted from the cache
     }
 
-    public void TestEvistionMRU() throws InterruptedException
+    public void TestEvictionMRU() throws InterruptedException
     {
         int numberBlocks = 2;
         int numberEntriesPerBlock = 2;
@@ -94,6 +97,27 @@ public class FuncTest {
         nC.put(5,"value5"); // LRU should cause data entry 3 to be deleted from the cache
     }
 
+    public void TestDelKey() throws InterruptedException
+    {
+        int numberBlocks = 5;
+        int numberEntriesPerBlock = 2;
+        NWayCache nC = new NWayCache(numberBlocks,numberEntriesPerBlock);
+        nC.put("key1","value1");
+        Thread.sleep(1000);
+        nC.put("key2","value2");
+        Thread.sleep(1000);
+        nC.delKey("key1");
+        try {
+            System.out.println(nC.get("key2"));
+            System.out.println(nC.get("key1"));
+        }
+        catch (CacheLoadException ex)
+        {
+            System.out.println("Caught Exception "+ex);
+            //Make call to memory and fetch the data and put it in cache
+        }
+    }
+
     public static void main(String[] args)
     {
         FuncTest test = new FuncTest();
@@ -105,11 +129,13 @@ public class FuncTest {
 
             //test.TestPutGet();
 
-            //test.TestEvistionLRU();
+            //test.TestEvictionLRU();
 
-            //test.TestEvistionMRU();
+            //test.TestEvictionMRU();
 
-            test.TestDuplicateEntry();
+            //test.TestDuplicateEntry();
+
+            //test.TestDelKey();
         }
         catch (Exception e) //to handle InterruptedException
         {

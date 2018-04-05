@@ -14,7 +14,7 @@ public class IndividualEntry<Key,Value>{
     private long creationTime;
     private int tag;
     private Value myVal;
-    private boolean isValid;
+    //private boolean isValid;
 
 
     /*
@@ -34,7 +34,7 @@ public class IndividualEntry<Key,Value>{
         this.accessTime=this.creationTime;
         this.tag = -1;
         this.myVal = null;
-        this.isValid = false;
+        //this.isValid = false;
     }
     public IndividualEntry(int tag, Value v)
     {
@@ -42,7 +42,7 @@ public class IndividualEntry<Key,Value>{
         this.accessTime=this.creationTime;
         this.tag = tag;
         this.myVal = v;
-        this.isValid = true;
+        //this.isValid = true;
     }
 
 
@@ -69,10 +69,12 @@ public class IndividualEntry<Key,Value>{
     /*
      * Get validity of cache block
      */
+    /*
     public boolean isValid()
     {
         return this.isValid;
     }
+    */
 
     /*
      * Get current access time of the entry (in milliseconds)
@@ -110,11 +112,12 @@ public class IndividualEntry<Key,Value>{
     /*
      * Set validity of cache block
      */
+    /*
     public void setValidity(boolean isValid)
     {
         this.isValid = isValid;
     }
-
+    */
     /*
      * Set current access time of the entry (in milliseconds)
      */
