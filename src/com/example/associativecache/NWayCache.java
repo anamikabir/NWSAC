@@ -1,6 +1,7 @@
 package com.example.associativecache;
 
 import com.example.associativecache.algorithms.*;
+import java.util.*;
 /**
  * Created by anamika on 3/25/18.
  *
@@ -83,7 +84,6 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
                 //update the outdated entry
                 entry.setValue(v);
                 entry.setAccessTime(System.currentTimeMillis());
-                this.cacheArr[i].reorderCache();
                 return;
 
             }
@@ -91,9 +91,7 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
             else    //if an entry already exists and the value remains unchanged
             {
                 // If access time needs to be modified --> uncomment the following lines
-
                 //entry.setAccessTime(System.currentTimeMillis());
-                //this.cacheArr[i].reorderCache();
                 return;
             }
 
@@ -102,9 +100,15 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
         if (this.cacheArr[i].getCurrSize()==this.cacheArr[i].getCapacity())
         {
             //capacity is full --> invoke eviction policy
-            this.evictionAlgo.evictionCacheEntry(this.cacheArr[i]);
+            //find index to place new entry
+            int index = this.evictionAlgo.evictionCacheEntry(this.cacheArr[i]);
+            this.cacheArr[i].addEntryAtIndex(index,temp);  //replaces older entry with the new one
+
         }
-        this.cacheArr[i].addEntry(temp);
+        else
+        {
+            this.cacheArr[i].addEntry(temp);
+        }
     }
 
 
@@ -124,7 +128,6 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
         }
         //System.out.println("After modifying access time");
         entry.setAccessTime(System.currentTimeMillis());
-        this.cacheArr[i].reorderCache();
         return entry.getValue();
 
     }

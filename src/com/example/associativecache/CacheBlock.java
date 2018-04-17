@@ -14,29 +14,31 @@ import java.lang.Long;
  */
 public class CacheBlock<Key,Value> {
 
-    private PriorityQueue<IndividualEntry<Key,Value>> cacheEntries;
+    private ArrayList<IndividualEntry<Key,Value>> cacheEntries;
     private int capacity;
 
     /* Constructors --------------------------------------------------------> */
 
     public CacheBlock()
     {
-        Comparator<IndividualEntry> comparator = new MyComparator();
-        this.cacheEntries = new PriorityQueue<>(comparator);
+        //Comparator<IndividualEntry> comparator = new MyComparator();
         this.capacity = 0;
+        this.cacheEntries = new ArrayList<IndividualEntry<Key,Value>>(this.capacity);
+
     }
     public CacheBlock(int n)
     {
-        Comparator<IndividualEntry> comparator = new MyComparator();
-        this.cacheEntries = new PriorityQueue<>(comparator);
+        //Comparator<IndividualEntry> comparator = new MyComparator();
         this.capacity = n;
+        this.cacheEntries = new ArrayList<IndividualEntry<Key,Value>>(this.capacity);
+
     }
 
     /* getters and setters --------------------------------------------------------> */
 
      public int getCurrSize()
      {
-         return cacheEntries.size();
+         return this.cacheEntries.size();
      }
 
     public int getCapacity()
@@ -50,9 +52,18 @@ public class CacheBlock<Key,Value> {
          this.capacity = capacity;
     }
 
+    // Method to view all the entries in cache block
+
+    public ArrayList<IndividualEntry<Key,Value>> getEntries()
+    {
+        return this.cacheEntries;
+    }
+
     /* Methods --------------------------------------------------------> */
 
-     // Method to delete first entry of the priority queue (with least value of access time)
+    /*
+
+     // Method to delete first entry of the array (with least value of access time)
 
      public IndividualEntry delFirst()
      {
@@ -100,6 +111,8 @@ public class CacheBlock<Key,Value> {
          }
 
      }
+     */
+
 
     // Method to delete entry with a specific tag
 
@@ -108,17 +121,33 @@ public class CacheBlock<Key,Value> {
          for(IndividualEntry entry: cacheEntries)
              if (entry.getTag()==tag)
              {
-                 cacheEntries.remove(entry);
+                 this.cacheEntries.remove(entry);
                  System.out.println("Entry removed from cache:\n"+entry);
              }
 
      }
+
+    // Method to delete entry with a specific entry
 
      public void delEntry(IndividualEntry entry){
          //if (cacheEntries.contains(entry))
          cacheEntries.remove(entry);
      }
 
+    // Method to delete entry with a specific index
+
+    public void delEntryByIndex(int entryindx)
+    {
+        if (entryindx <= this.getCurrSize())
+            cacheEntries.remove(entryindx);
+    }
+
+    //Method to replace an old entry with a new one
+    public void addEntryAtIndex(int ind, IndividualEntry<Key,Value> entry)
+    {
+        this.cacheEntries.set(ind,entry);
+        System.out.println("Entry added to cache:\n"+entry);
+    }
     // Method to find a specific individual entry with a given tag
 
     public IndividualEntry findSpecific(int tag)
@@ -131,13 +160,6 @@ public class CacheBlock<Key,Value> {
         return null;
     }
 
-    // Method to view all the entries in cache block
-
-    public void viewEntries()
-    {
-        for(IndividualEntry<Key,Value> entry: cacheEntries)
-            System.out.println(entry);
-    }
 
 
     // Method to add an entry to the cache block
@@ -156,6 +178,7 @@ public class CacheBlock<Key,Value> {
  *  Comparator class to compare two individual Entry based on their access time
  */
 
+/*
 class MyComparator implements Comparator<IndividualEntry> {
 
     @Override
@@ -167,3 +190,4 @@ class MyComparator implements Comparator<IndividualEntry> {
         return val1.compareTo(val2);
     }
 }
+*/
