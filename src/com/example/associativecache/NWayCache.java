@@ -70,10 +70,62 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
 
 
     @Override
-    public void put(Key k, Value v)
-    {
+    public void put(Key k, Value v) {
         int tag = hashFunc(k);
         int i = getBlockIndex(tag);
+
+        // NEWER VERSION with single scan //
+
+        //returns index of entry if found, else returns the entry that can be evicted - SCAN 1
+        int index = this.evictionAlgo.evictionCacheEntry(this.cacheArr[i], tag);
+
+        if( index!=-1) {
+            // returned entry
+            IndividualEntry<Key, Value> temp = this.cacheArr[i].getEntries().get(index);
+
+
+            if (temp.getTag() == tag) //if entry already exists
+            {
+                System.out.println("Duplicate Entry detected.");
+                Value currVal = temp.getValue();
+
+                if (!this.isEqual(currVal, v)) //If the existing value in cache and new value are not same
+                {
+                    //update the outdated entry
+                    temp.setValue(v);
+                    temp.setCount(temp.getCount()+1);
+                    temp.setAccessTime(System.currentTimeMillis());
+                    return;
+
+                } else    //if an entry already exists and the value remains unchanged
+                {
+                    // If access time needs to be modified --> uncomment the following lines
+                    //entry.setAccessTime(System.currentTimeMillis());
+                    //temp.setCount(temp.getCount()+1);
+                    return;
+                }
+
+            }
+        }
+
+        // If the entry doesn't already exist
+
+        IndividualEntry<Key, Value> temp = new IndividualEntry<>(tag, v);
+
+        if (this.cacheArr[i].getCurrSize() == this.cacheArr[i].getCapacity()) // if cache if full
+        {
+            //Carry out eviction
+            System.out.println("Entry evicted from the cache:\t" + this.cacheArr[i].getEntries().get(index));
+            this.cacheArr[i].addEntryAtIndex(index, temp); //replaces evicted entry with new one
+        }
+        else
+            this.cacheArr[i].addEntry(temp); //adds the entry to cache
+
+
+        /*
+
+        // OLDER VERSION with additional scan during eviction //
+
         IndividualEntry<Key,Value> entry = this.cacheArr[i].findSpecific(tag);
         if (entry != null)
         {
@@ -108,7 +160,8 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
         else
         {
             this.cacheArr[i].addEntry(temp);
-        }
+        }*/
+
     }
 
 
@@ -127,6 +180,7 @@ public class NWayCache<Key,Value> implements CacheINTF<Key,Value> {
              */
         }
         //System.out.println("After modifying access time");
+        entry.setCount(entry.getCount()+1);
         entry.setAccessTime(System.currentTimeMillis());
         return entry.getValue();
 

@@ -118,6 +118,7 @@ public class CacheBlock<Key,Value> {
 
     public void delSpecific(int tag)
      {
+         /*
          for(IndividualEntry entry: cacheEntries)
              if (entry.getTag()==tag)
              {
@@ -125,6 +126,16 @@ public class CacheBlock<Key,Value> {
                  System.out.println("Entry removed from cache:\n"+entry);
              }
 
+        */
+         for(Iterator<IndividualEntry<Key,Value>> it = cacheEntries.iterator(); it.hasNext();)
+         {
+             IndividualEntry<Key,Value> entry = it.next();
+             if (entry.getTag()==tag) {
+                 it.remove();
+                 System.out.println("Entry removed from cache:\t" + entry);
+                 return;
+             }
+         }
      }
 
     // Method to delete entry with a specific entry
@@ -146,7 +157,7 @@ public class CacheBlock<Key,Value> {
     public void addEntryAtIndex(int ind, IndividualEntry<Key,Value> entry)
     {
         this.cacheEntries.set(ind,entry);
-        System.out.println("Entry added to cache:\n"+entry);
+        System.out.println("Entry added to cache:\t"+entry);
     }
     // Method to find a specific individual entry with a given tag
 
@@ -168,7 +179,7 @@ public class CacheBlock<Key,Value> {
      {
 
          this.cacheEntries.add(entry);
-         System.out.println("Entry added to cache:\n"+entry);
+         System.out.println("Entry added to cache:\t"+entry);
      }
 
 

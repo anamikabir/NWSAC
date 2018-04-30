@@ -14,6 +14,7 @@ public class IndividualEntry<Key,Value>{
     private long creationTime;
     private int tag;
     private Value myVal;
+    private int count;  //using Key just as a template, SomeVar doesn't have to be necessarily a Key
     //private boolean isValid;
 
 
@@ -34,6 +35,7 @@ public class IndividualEntry<Key,Value>{
         this.accessTime=this.creationTime;
         this.tag = -1;
         this.myVal = null;
+        this.count=1;
         //this.isValid = false;
     }
     public IndividualEntry(int tag, Value v)
@@ -42,6 +44,7 @@ public class IndividualEntry<Key,Value>{
         this.accessTime=this.creationTime;
         this.tag = tag;
         this.myVal = v;
+        this.count=1;
         //this.isValid = true;
     }
 
@@ -124,6 +127,23 @@ public class IndividualEntry<Key,Value>{
     public void setAccessTime(long timestamp)
     {
         this.accessTime = timestamp;
+    }
+
+    /*
+     * Get the additional parameter (can be used to store count or other information)
+     */
+    public int getCount()
+    {
+        return this.count;
+    }
+
+
+    /*
+     * Get the additional parameter (can be used to store count or other information)
+     */
+    public void setCount(int x)
+    {
+        this.count=x;
     }
 
 

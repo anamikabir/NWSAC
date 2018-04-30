@@ -4,15 +4,14 @@ import com.example.associativecache.*;
 
 import java.util.ArrayList;
 
-
 /**
- * Created by anamika on 3/22/18.
+ * Created by anamika on 4/29/18.
  */
-public class LRU<Key, Value> extends ReplacementAlgo<Key, Value> {
+public class LFU <Key, Value> extends ReplacementAlgo<Key, Value> {
 
     /*
-     * Least Recently Used
-     * Implementing cache eviction method to remove the oldest entry from the cache block
+     * Least Frequently Used
+     * Implementing cache eviction method to remove the least frequently entry from the cache block
      */
     @Override
     public int evictionCacheEntry(CacheBlock<Key,Value> block, int tag)
@@ -22,8 +21,8 @@ public class LRU<Key, Value> extends ReplacementAlgo<Key, Value> {
         if (block.getCurrSize() == 0)
             return res;
 
-        Long minTime = Long.MAX_VALUE;
-        IndividualEntry<Key,Value> markedForDeletion = null;
+        Integer minCount = Integer.MAX_VALUE;
+        //IndividualEntry<Key,Value> markedForDeletion = null;
         ArrayList<IndividualEntry<Key,Value>> arr = block.getEntries();
 
         for(int i=0;i<arr.size();i++)
@@ -33,10 +32,10 @@ public class LRU<Key, Value> extends ReplacementAlgo<Key, Value> {
             {
                 return i;
             }
-            if (temp.getAccessTime()<minTime)
+            if (temp.getCount() <minCount)
             {
-                minTime = temp.getAccessTime();
-                markedForDeletion = temp;
+                minCount = temp.getCount();
+                //markedForDeletion = temp;
                 res = i;
             }
         }
@@ -44,5 +43,4 @@ public class LRU<Key, Value> extends ReplacementAlgo<Key, Value> {
         //System.out.println("LRU Entry: "+markedForDeletion);
         return res;
     }
-
 }
